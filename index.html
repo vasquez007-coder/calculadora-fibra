@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#12345a">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Fibra</title>
+
+    <style>
+        <script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .catch(error => console.error("Error:", error));
+    });
+}
+</script>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 420px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #eef3f8;
+        }
+
+        h1 {
+            color: #12345a;
+            text-align: center;
+        }
+
+        input, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #087f8c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora de Fibra</h1>
+
+    <label for="distancia">Distancia (metros)</label>
+    <input id="distancia" type="number" min="0.001" step="any"
+           placeholder="Ejemplo: 5000">
+
+    <label for="perdida">Pérdida total (dB)</label>
+    <input id="perdida" type="number" min="0" step="any"
+           placeholder="Ejemplo: 2.5">
+
+    <button onclick="calcular()">CALCULAR</button>
+
+    <div id="resultado">Resultado: -- dB/km</div>
+
+    <script>
+        function calcular() {
+            const distancia = Number(document.getElementById("distancia").value);
+            const perdida = Number(document.getElementById("perdida").value);
+            const resultado = document.getElementById("resultado");
+
+            if (!Number.isFinite(distancia) || distancia <= 0 ||
+                !Number.isFinite(perdida) || perdida < 0 ||
+                document.getElementById("distancia").value === "" ||
+                document.getElementById("perdida").value === "") {
+                resultado.textContent = "Introduce valores válidos.";
+                return;
+            }
+
+            const kilometros = distancia / 1000;
+            const perdidaKm = perdida / kilometros;
+
+            resultado.textContent =
+                "Pérdida media: " + perdidaKm.toFixed(3) + " dB/km";
+        }
+    </script>
+
+</body>
+</html>
